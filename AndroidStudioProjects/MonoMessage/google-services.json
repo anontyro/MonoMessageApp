@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "801918514480",
+    "firebase_url": "https://monomessage-96ef9.firebaseio.com",
+    "project_id": "monomessage-96ef9",
+    "storage_bucket": "monomessage-96ef9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:801918514480:android:6c94819a73fc3c3f",
+        "android_client_info": {
+          "package_name": "alexwilkinson.co.monomessage"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "801918514480-3mbn325c3j191j0fkkml5m96ckgltob3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "alexwilkinson.co.monomessage",
+            "certificate_hash": "4AEB4662A58C941B38A1E224B493D2786B09E4FA"
+          }
+        },
+        {
+          "client_id": "801918514480-htp0hfhh3lge6d12b0j2cagoimgbnmlv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyArSQKVak1X7WgbqUF9-hctrkfO92XOLWw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "801918514480-htp0hfhh3lge6d12b0j2cagoimgbnmlv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

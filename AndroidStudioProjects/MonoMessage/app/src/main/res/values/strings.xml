@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">MonoMessage</string>
+    <string name="main_activity_button_hint">Share a thought</string>
+    <string name="main_activity_button_name">Go</string>
+
+
+</resources>
