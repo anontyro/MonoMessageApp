@@ -16,15 +16,21 @@ public class MessageItem {
     public String message;
     public String dateTime;
     public String sentFrom = "web";
+    public String userLocation="";
 
 
     public MessageItem(String message) {
         dateTime = setDateTime();
+
         this.message = message;
     }
 
-    public void setSentFrom (String sentFrom){
-        this.sentFrom = sentFrom;
+    public String setSentFrom (String sentFrom){
+        return this.sentFrom = sentFrom;
+    }
+
+    public String setUserLocation(String userLocation){
+        return this.userLocation = userLocation;
     }
 
 
