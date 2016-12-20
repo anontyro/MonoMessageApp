@@ -28,43 +28,73 @@ import java.util.ArrayList;
 import alexwilkinson.co.monomessage.util.MessageItem;
 
 public class MainActivity extends AppCompatActivity {
+    //GUI fields
     private EditText etUserMsg;
     private Button buSendMsg;
+
+    //firebase vars
     private FirebaseDatabase database;
     private DatabaseReference myRef;
+
+    //user defined vars
     private String lastSent = "";
-    protected ArrayList<MessageItem>messageList = new ArrayList<>();
+    private ArrayList<MessageItem>messageList = new ArrayList<>();
+    private int numberOfMessages = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //setup the basics needed for the view
         etUserMsg =(EditText)findViewById(R.id.etActivityMainUserMessage);
-
         database = FirebaseDatabase.getInstance();
+
+        //keeps the data even when restarted
+        database.setPersistenceEnabled(true);
         myRef = database.getReference("msg");
 
+        //call private method to handle the listview setup
+        setupListView();
+
+
+
+
+
+
+    }
+    /*
+    Setup the listview field and assigns my custom ArrayAdaptor to the list to be used,
+    Adds the read from database code to ensure that the list is updated with whatever value has
+    been added to the database and will check how many messages have been received before backing
+    up to the local database.
+     */
+    private void setupListView(){
 
         ListView lvMainLog = (ListView)findViewById(R.id.lvMainLog);
-
         final MainListAdapter myAdapter = new MainListAdapter(getApplicationContext(),messageList);
-
-//        final ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,messageList);
-
         lvMainLog.setAdapter(myAdapter);
 
-
-
-        //read
-
+        //read from the database
         myRef.addValueEventListener(new ValueEventListener() {
+            /**
+             * Override method that listens for the database message to get updated information and
+             * will save the messages to a local log every X number of messages (currently set at 10)
+             * @param dataSnapshot
+             */
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String returnedVal = dataSnapshot.getValue(String.class);
                 MessageItem item = new MessageItem(returnedVal);
 
                 myAdapter.add(item);
+                numberOfMessages++;
+
+                if(numberOfMessages >= 10){
+                    //TODO: save the messages locally to allow the user to keep a log
+                    System.out.println("Backup messages HERE");
+                    numberOfMessages = 0;
+                }
             }
 
             @Override
@@ -72,19 +102,24 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-
-
     }
-    private void sendMessage (String message){
 
+    /*
+    will push the message from the user to the database
+     */
+    private void sendMessage (String message){
 
         //write to the database
         myRef.setValue(message);
 
     }
 
-
+    /**
+     * Button click method that will trigger the validation of the current message inserted,
+     * if the message is valid it will add it to the database. If not the user will get a Toast
+     * displaying why not.
+     * @param view
+     */
     public void sendMsg(View view) {
         String message = etUserMsg.getText().toString();
         if(messageValidation(message)) {
@@ -97,6 +132,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /*
+    Message validation method that will check the message conforms to standards to allow it to be
+    sent out.
+     */
     private boolean messageValidation(String message){
 
         if(message.equalsIgnoreCase("")){
@@ -109,12 +148,24 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Inner class that is used to control the ListView, this ArrayAdapter will pull the details
+     * and display them to the user
+     */
     public class MainListAdapter extends ArrayAdapter<MessageItem>{
 
         public MainListAdapter(Context context, ArrayList<MessageItem>messages){
             super(context,0,messages);
         }
 
+        /**
+         * Override method to create the listView which will display the items in the activity_main_item_object.xml
+         * view in the list, and will identify crudly if the data has been sent from local or online
+         * @param position item position within the arrayList.
+         * @param convertView the main view for this list which is activity_main_item_object.xml.
+         * @param parent main view of the activity.
+         * @return convertView is returned and displays the values from the ArrayList.
+         */
         @NonNull
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
